@@ -1,0 +1,42 @@
+version: "3"
+
+volumes:
+  postgres_volume:
+
+services:
+  db:
+    build: ./DB
+    restart: always
+    container_name: postgres
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  booksapi:
+    build: ./book_microservice
+    restart: always
+    container_name: booksApiContainer
+    ports:
+      - 8000:8000
+      - 8001:8001
+    depends_on:
+      - db
+  usersapi:
+    build: ./user_microservice
+    restart: always
+    container_name: usersApiContainer
+    ports:
+      - 8002:8002
+      - 8003:8003
+    depends_on:
+      - booksapi
+      - db
+  statisticsapi:
+    build: ./statistics_microservice
+    restart: always
+    container_name: statisticsApiContainer
+    ports:
+      - 8004:8004
+    depends_on:
+      - usersapi
+      - booksapi

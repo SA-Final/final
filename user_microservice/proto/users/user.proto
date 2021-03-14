@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package users;
+
+message Book {
+  int32 id = 1;
+  string name = 2;
+  string author = 3;
+}
+
+message User {
+  int32 id = 1;
+  string email = 2;
+  string username = 3;
+  string password = 4;
+  repeated int32 bookIds = 5;
+}
+
+message UserAddBookRequest {
+  string bookName = 1;
+}
+
+message UserAddBookResponse {
+  Book book = 1;
+}
+
+message GetAllBooksRequest {}
+message GetAllBooksResponse {
+  repeated Book books = 1;
+}
+
+message GetAllUsersRequest {}
+message GetAllUsersResponse {
+  repeated User users = 1;
+}
+
+service UserService {
+  rpc AddBook(UserAddBookRequest) returns (UserAddBookResponse) {}
+  rpc GetAllBooks(GetAllBooksRequest) returns(GetAllBooksResponse) {}
+  rpc GetAllUsers(GetAllUsersRequest) returns(GetAllUsersResponse) {}
+}
